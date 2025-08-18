@@ -3,3 +3,8 @@ version: '1.0'
 main: net.P3rso.pClans.PClans
 api-version: '1.21'
 authors: [ P3rsonal1ty ]
+dependencies:
+  server:
+    PlaceholderAPI:
+      load: BEFORE
+      required: true

@@ -1,17 +1,54 @@
 package net.P3rso.pClans;
 
+import net.P3rso.pClans.commands.ClanCommand;
+import net.P3rso.pClans.db.ClanOperates;
+import net.P3rso.pClans.db.DataBase;
+import net.P3rso.pClans.events.ClanEvents;
+import net.P3rso.pClans.papi.PlaceHolders;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class PClans extends JavaPlugin {
+import java.util.logging.Logger;
 
+public final class PClans extends JavaPlugin {
+    public static Logger LOGGER;
+    public static FileConfiguration configuration;
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        LOGGER = getLogger();
+        configuration = getConfig();
+
+        //проверка на PAPI
+        if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            LOGGER.warning("Could not find PlaceholderAPI! This plugin is required."); //
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+        else{
+            new PlaceHolders().register();
+        }
+
+        //подключение к дб
+        DataBase.connectToDatabase();
+        DataBase.createTable();
+
+        //загрузка кланов
+        ClanOperates.LoadClans();
+
+        //загрузка ивентЛистенеров
+        getServer().getPluginManager().registerEvents(new ClanEvents(),this);
+
+        //загрузка команд
+        this.registerCommand("clan",new ClanCommand());
+
+        //принудительное сохранение данных
+        ClanOperates.UpdateData(this);
 
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        //сохранение кланов
+        ClanOperates.SaveClans();
     }
 }

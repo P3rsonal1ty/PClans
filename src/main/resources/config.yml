@@ -1,0 +1,9 @@
+mysql:
+  host: 212.193.5.99
+  port: 3306
+  database: marriage
+  username: root
+  password: Key9812iopos@
+messages:
+  not-enough-rights: "У вас недостаточно прав"
+  no-clan: "Для начала вступите/создайте клан"
