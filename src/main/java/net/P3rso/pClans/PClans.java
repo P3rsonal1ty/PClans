@@ -3,7 +3,7 @@ package net.P3rso.pClans;
 import net.P3rso.pClans.commands.ClanCommand;
 import net.P3rso.pClans.db.ClanOperates;
 import net.P3rso.pClans.db.DataBase;
-import net.P3rso.pClans.events.ClanEvents;
+import net.P3rso.pClans.events.ClanTestEvents;
 import net.P3rso.pClans.papi.PlaceHolders;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -36,7 +36,7 @@ public final class PClans extends JavaPlugin {
         ClanOperates.LoadClans();
 
         //загрузка ивентЛистенеров
-        getServer().getPluginManager().registerEvents(new ClanEvents(),this);
+        Bukkit.getPluginManager().registerEvents(new ClanTestEvents(),this);
 
         //загрузка команд
         this.registerCommand("clan",new ClanCommand());
