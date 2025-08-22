@@ -5,7 +5,9 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.P3rso.pClans.clans.Clan;
 import net.P3rso.pClans.db.ClanOperates;
+import net.P3rso.pClans.vault.EcoHook;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -64,6 +66,10 @@ public class ClanCommand implements BasicCommand {
              return;
         }
 
+        if(args.length==3 && args[0].equals("money") && args[1].equals("set")){
+            addMoney(player, args[2]);
+        }
+
     }
 
     @Override
@@ -107,6 +113,29 @@ public class ClanCommand implements BasicCommand {
         }
         clan.remove();
     }
+    private static void addMoney(Player player, String arg){
+        UUID uuid = player.getUniqueId();
+        Clan clan = ClanOperates.playerClan.getOrDefault(uuid,null);
+        if(clan == null){
+            String message = configuration.getString("messages.no-clan");
+            if(message!=null) player.sendMessage(message);
+            return;
+        }
+        if(!arg.matches("[0-9]+")){
+            player.sendMessage("Неправильный формат ввода");
+            return;
+        }
+        long balance = Long.parseLong(arg);
+        Economy econ = EcoHook.getEconomy();
+        if(econ.getBalance(player)>=balance) {
+            econ.withdrawPlayer(player, balance);
+            clan.addBalance(balance);
+            player.sendMessage("Успешное пополнение баланса клана!");
+            return;
+        }
+        player.sendMessage("Недостаточно денег на балансе!");
+    }
+
 
     private static void changeName(Player player, String newName){
         UUID uuid = player.getUniqueId();

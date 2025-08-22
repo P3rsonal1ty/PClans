@@ -15,12 +15,18 @@ repositories {
     maven {
         url = 'https://repo.extendedclip.com/releases/'
     }
+    maven {
+        url = 'https://jitpack.io'
+    }
 }
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
     implementation("org.xerial:sqlite-jdbc:3.42.0.0")
     implementation('me.clip:placeholderapi:2.11.6')
+    compileOnly ("com.github.MilkBowl:VaultAPI:1.7") {
+        exclude group: "org.bukkit", module: "bukkit"
+    }
 }
 
 tasks {

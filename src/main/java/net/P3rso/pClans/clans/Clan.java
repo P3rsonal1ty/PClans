@@ -83,6 +83,13 @@ public class Clan {
         this.balance = balance;
     }
 
+    public void removeBalance(long balance){
+        if(this.balance>=balance) this.balance-=balance;
+    }
+    public void addBalance(long balance){
+        this.balance += balance;
+    }
+
     public UUID getClanUUID(){
         return this.clanUUID;
     }
