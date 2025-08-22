@@ -17,28 +17,41 @@ import java.util.List;
 public class ColorDialog {
     private static DialogAction action = DialogAction.customClick(
             (view, audience)->{
-                int r = view.getFloat("R").intValue();
-                int g = view.getFloat("G").intValue();
-                int b = view.getFloat("B").intValue();
+                int r = Math.max(0, Math.min(255, view.getFloat("R").intValue()));
+                int g = Math.max(0, Math.min(255, view.getFloat("G").intValue()));
+                int b = Math.max(0, Math.min(255, view.getFloat("B").intValue()));
                 if(audience instanceof  Player player) openColorDialog(player,r,g,b);
             }, ClickCallback.Options.builder()
-                    .uses(100) // Set the number of uses for this callback. Defaults to 1
-                    .lifetime(ClickCallback.DEFAULT_LIFETIME) // Set the lifetime of the callback. Defaults to 12 hours
+                    .uses(100)
+                    .lifetime(ClickCallback.DEFAULT_LIFETIME)
+                    .build()
+    );
+    private static DialogAction actionResult = DialogAction.customClick(
+            (view, audience)->{
+                int r = Math.max(0, Math.min(255, view.getFloat("R").intValue()));
+                int g = Math.max(0, Math.min(255, view.getFloat("G").intValue()));
+                int b = Math.max(0, Math.min(255, view.getFloat("B").intValue()));
+                if(audience instanceof  Player player) {
+                    player.closeDialog();
+                    player.sendMessage(String.format("вы выбрали цвет: %s %s %s",r,g,b));
+                }
+            }, ClickCallback.Options.builder()
+                    .uses(100)
+                    .lifetime(ClickCallback.DEFAULT_LIFETIME)
                     .build()
     );
 
     private static ActionButton buttonCheck = ActionButton.create(
-            Component.text("Проверить цвет", TextColor.color(0xFFA0B1)),
+            Component.text("Проверить цвет", TextColor.color(0x8A7CFF)),
             Component.text("Нажмите чтобы посмотреть результат!"),
             100,
             action
-
     );
     private static ActionButton buttonAccept = ActionButton.create(
-            Component.text("Подтвердить", TextColor.color(0xAEFFC1)),
+            Component.text("Подтвердить", TextColor.color(0x24FF36)),
             Component.text("Нажмите чтобы подтвердить новый цвет"),
             100,
-        action
+        actionResult
     );
 
     public static void openColorDialog(Player player, int R, int G, int B){
@@ -57,7 +70,7 @@ public class ColorDialog {
                                         .initial((float) G)
                                         .width(255)
                                         .build(),
-                                DialogInput.numberRange("B",Component.text("B", NamedTextColor.BLUE),0f,255f)
+                                DialogInput.numberRange("B",Component.text("B", NamedTextColor.DARK_BLUE),0f,255f)
                                         .step(1f)
                                         .initial((float) B)
                                         .width(255)

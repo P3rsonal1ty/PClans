@@ -4,6 +4,7 @@ import net.P3rso.pClans.clans.Clan;
 import net.P3rso.pClans.db.ClanOperates;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;

@@ -1,9 +1,12 @@
 package net.P3rso.pClans.db;
 
+import org.bukkit.Bukkit;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
 import static net.P3rso.pClans.PClans.LOGGER;
