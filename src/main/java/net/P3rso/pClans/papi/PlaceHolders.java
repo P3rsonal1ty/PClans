@@ -36,7 +36,7 @@ public class PlaceHolders extends PlaceholderExpansion {
             case ("color") -> profile.getColorString();
             case ("colorName") -> profile.getColorString() + profile.getName();
             case ("pvp") -> getPvpStatus(profile.getPvp());
-
+            case("weight") -> String.valueOf(profile.getPlayerWeight(uuid));
             default -> null;
         };
     }
@@ -46,5 +46,4 @@ public class PlaceHolders extends PlaceholderExpansion {
         if(bool) return "вкл";
         else return "выкл";
     }
-
 }

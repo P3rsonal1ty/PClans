@@ -1,13 +1,12 @@
 package net.P3rso.pClans.clans;
 
 import net.P3rso.pClans.db.ClanOperates;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class Clan {
     private String name;
@@ -19,6 +18,8 @@ public class Clan {
     private long balance;
     private boolean pvp;
     private int level;
+    private Map<UUID, Integer> weightPlayer = new HashMap<>();
+
     public Clan(UUID clanUUID, String name,UUID owner, long balance, int color, List<UUID> players, boolean pvp, int level){
         this.clanUUID = clanUUID;
         this.name = name;
@@ -69,7 +70,7 @@ public class Clan {
     }
 
     public String getColorString(){
-        return "<#"+Integer.toHexString(this.color)+">";
+        return "#"+Integer.toHexString(this.color);
     }
     public void setColor(int color) {
         this.color = color;
@@ -116,11 +117,26 @@ public class Clan {
         return this.invites;
     }
 
+    public void setWeightPlayer(UUID playerUUID, int weight){
+        weightPlayer.put(playerUUID, weight);
+    }
+    public int getPlayerWeight(UUID playerUUID){
+        if(playerUUID.equals(owner)) return 0;
+        return weightPlayer.getOrDefault(playerUUID,5);
+    }
     public void remove(){
         ClanOperates.clans.remove(this);
         for(UUID uuid : players){
             ClanOperates.playerClan.put(uuid,null);
         }
+    }
+
+    public void clanAlert(String Message){
+        players.forEach(uuid -> {
+            Player player = Bukkit.getPlayer(uuid);
+            if(player!=null) player.sendMessage(MiniMessage.miniMessage().deserialize(Message));
+        });
+
     }
 
 }

@@ -1,5 +1,6 @@
 package net.P3rso.pClans.vault;
 
+import net.P3rso.pClans.clans.Clan;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -18,7 +19,6 @@ public class EcoHook {
             LOGGER.severe(String.format("[%s] - Выключение плагина, плагин экономики не найден!", plugin.getDescription().getName()));
             plugin.getServer().getPluginManager().disablePlugin(plugin);
         }
-
     }
 
     public static boolean setupEconomy(JavaPlugin plugin) {
